@@ -12,7 +12,10 @@ namespace ServiceStack.OrmLite.MySql
     {
         public static MySqlDialectProvider Instance = new MySqlDialectProvider();
 
-    	private const string TextColumnDefinition = "TEXT";
+		public const int TinyText = 256;
+		public const int Text = 64 * 1024;
+		public const int MediumText = 16 * 1024 * 1024;
+		public const int LongText = Int16.MinValue; // should actually be 4 * 1024 * 1024 * 1024, but System.ComponentModel.DataAnnotations.StringLength only accepts int (which is not large enough)
 
     	private MySqlDialectProvider()
         {
@@ -171,13 +174,30 @@ namespace ServiceStack.OrmLite.MySql
 
         public string GetColumnDefinition(FieldDefinition fieldDefinition)
         {
-            if (fieldDefinition.PropertyInfo.FirstAttribute<TextAttribute>() != null)
-            {
-                var sql = new StringBuilder();
-                sql.AppendFormat("{0} {1}", GetQuotedColumnName(fieldDefinition.FieldName), TextColumnDefinition);
-                sql.Append(fieldDefinition.IsNullable ? " NULL" : " NOT NULL");
-                return sql.ToString();
-            }
+			if (fieldDefinition.PropertyInfo.FirstAttribute<TextAttribute>() != null)
+			{
+				return this.GetTextColumnDefinition("TEXT", fieldDefinition);
+			}
+			
+			if (fieldDefinition.FieldLength.HasValue && fieldDefinition.FieldLength.Value == TinyText)
+			{
+				return this.GetTextColumnDefinition("TINYTEXT", fieldDefinition);
+			}
+			
+			if (fieldDefinition.FieldLength.HasValue && fieldDefinition.FieldLength.Value == Text)
+			{
+				return this.GetTextColumnDefinition("TEXT", fieldDefinition);
+			}
+			
+			if (fieldDefinition.FieldLength.HasValue && fieldDefinition.FieldLength.Value == MediumText)
+			{
+				return this.GetTextColumnDefinition("MEDIUMTEXT", fieldDefinition);
+			}
+			
+			if (fieldDefinition.FieldLength.HasValue && fieldDefinition.FieldLength.Value == LongText)
+			{
+				return this.GetTextColumnDefinition("LONGTEXT", fieldDefinition);
+			}
 
             return base.GetColumnDefinition(
                 fieldDefinition.FieldName, 
@@ -189,5 +209,13 @@ namespace ServiceStack.OrmLite.MySql
                 null, 
                 fieldDefinition.DefaultValue);
         }
+
+		private string GetTextColumnDefinition(string type, FieldDefinition fieldDefinition)
+		{
+			var sql = new StringBuilder();
+			sql.AppendFormat("{0} {1}", GetQuotedColumnName(fieldDefinition.FieldName), type);
+			sql.Append(fieldDefinition.IsNullable ? " NULL" : " NOT NULL");
+			return sql.ToString();
+		}
 	}
 }
