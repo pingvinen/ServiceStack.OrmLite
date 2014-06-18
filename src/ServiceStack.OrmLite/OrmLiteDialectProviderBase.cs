@@ -261,7 +261,7 @@ namespace ServiceStack.OrmLite
             if (value.GetType() == type)
             {
                 if (type == typeof(byte[]))
-                    return TypeSerializer.DeserializeFromStream<byte[]>(new MemoryStream((byte[])value));
+					return JsonSerializer.DeserializeFromStream<byte[]>(new MemoryStream((byte[])value));
 
                 return value;
             }
@@ -283,7 +283,7 @@ namespace ServiceStack.OrmLite
 
             try
             {
-                var convertedValue = TypeSerializer.DeserializeFromString(value.ToString(), type);
+				var convertedValue = JsonSerializer.DeserializeFromString(value.ToString(), type);
                 return convertedValue;
             }
             catch (Exception)
@@ -302,7 +302,7 @@ namespace ServiceStack.OrmLite
             {
                 if (TypeSerializer.CanCreateFromString(fieldType))
                 {
-                    return OrmLiteConfig.DialectProvider.GetQuotedParam(TypeSerializer.SerializeToString(value));
+					return OrmLiteConfig.DialectProvider.GetQuotedParam(JsonSerializer.SerializeToString(value));
                 }
 
                 throw new NotSupportedException(

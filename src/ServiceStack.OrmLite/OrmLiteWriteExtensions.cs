@@ -222,7 +222,7 @@ namespace ServiceStack.OrmLite
             {
                 return dataReader.GetOrdinal(OrmLiteConfig.DialectProvider.NamingStrategy.GetColumnName(fieldName));
             }
-            catch (IndexOutOfRangeException ignoreNotFoundExInSomeProviders)
+            catch (IndexOutOfRangeException)
             {
                 return NotFound;
             }

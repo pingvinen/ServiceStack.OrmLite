@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FD20F088-ACC0-4979-AC0C-8C541C2E7DE5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -32,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack.Common, Version=3.5.5.7454, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\ServiceStack.Common.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\lib\ServiceStack.Text.dll</HintPath>
     </Reference>
@@ -47,6 +41,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="MySql.Data">
       <HintPath>..\..\lib\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\..\lib\ServiceStack.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,7 @@ namespace ServiceStack.OrmLite.MySql.Tests
 		private readonly CultureInfo CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
 
 		[TestFixtureSetUp]
-		public void TestFixtureSetUp()
+		public new void TestFixtureSetUp()
 		{
 			Thread.CurrentThread.CurrentCulture = new CultureInfo("vi-VN");
 			Thread.CurrentThread.CurrentUICulture = new CultureInfo("vi-VN");
